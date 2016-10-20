@@ -12,14 +12,17 @@ run the cFE on Composite. (It's going to be awesome!)
 ## Developing
 
 If you want to get started working on this project, then you have two options.
-If you are not on linux then you'll want to use our `Vagrantfile` to boot up a
+If you are not on a 32 bit linux machine (ubuntu 14 is knonw to play well) then you'll want to use our `Vagrantfile` to boot up a
 VM suitable for development (this requires vagrant to be installed, either with
 a package manager, or from the vagrant
 [website](https://www.vagrantup.com/docs/installation/):
 
 ```shell
-git clone https://github.com/Others/cFE2cos.git
+# Clone repo and setup submodule
+git clone https://github.com/GW-SHC/cFE2cos.git
 cd cFE2cos/
+git submodule init composite/
+git submodule update composite/
 # Boot up the VM (creating it if it doesn't exist yet)
 vagrant up
 # SSH into the VM, and hack away! (The repository will be linked into ~/cFE2cos)
@@ -34,7 +37,9 @@ metal. To do this you just need to run `provision.sh` (beware that this *will*
 require you to enter your password):
 
 ```shell
-git clone https://github.com/Others/cFE2cos.git
+git clone https://github.com/GW-SHC/cFE2cos.git
+git submodule init composite/
+git submodule update composite/
 cd cFE2cos/
 ./provision.sh
 ```
