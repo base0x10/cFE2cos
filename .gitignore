@@ -1,5 +1,6 @@
 *.o
 *.so
+*.bin
 
 **/.DS_Store
 **/.vagrant
