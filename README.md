@@ -64,11 +64,11 @@ And then to run the micro_boot version and verify that it's built correctly:
 ```shell
 # Starting from the cFE2cos directory on your development VM (or machine)
 cd composite/transfer
-./qemu.sh micro_boot.sh
+./qemu.sh cFE_boot.sh
 ```
 
-At this point if it worked you'll see the system print `Micro Booter done.`, and
-then loop forever. To escape qemu, type `control-a` then `c` then `q` then
+At this point if it worked you'll see the system print `We live!`, and
+then terminate messily. To escape qemu, type `control-a` then `c` then `q` then
 `enter`.
 
 ### Building and Running the cFE
