@@ -5,6 +5,9 @@ sudo apt-get update
 sudo apt-get -y install make
 
 # Tools nessesary for the cFE
+sudo apt-get -y install cmake
+
+# Tools nessesary for the cFE tools
 sudo apt-get -y install python-qt4
 sudo apt-get -y install pyqt4-dev-tools
 
