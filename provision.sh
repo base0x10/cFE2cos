@@ -17,6 +17,9 @@ sudo apt-get -y install gcc-multilib
 sudo apt-get -y install binutils-dev
 sudo apt-get -y install qemu-kvm
 
-# Useful tools to have around
+# Useful debugging tools
+sudo apt-get -y install systemtap
+
+# Useful general purpose tools
 sudo apt-get -y install git
 sudo apt-get -y install ntp
