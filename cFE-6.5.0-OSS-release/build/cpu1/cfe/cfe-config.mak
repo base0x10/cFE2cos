@@ -24,12 +24,12 @@
 ## Operating System
 ## OS = The operating system selected for the Abstraction implementation
 ##---------------------------------------------------------
-OS = posix
+OS = composite
 
 ##---------------------------------------------------------
 ## PSP -- CFE Platform Support Package
 ##---------------------------------------------------------
-PSP = pc-linux
+PSP = pc-composite
 
 ##---------------------------------------------------------
 ## BSP -- OSAL BSP/Operating system for the board
@@ -37,11 +37,11 @@ PSP = pc-linux
 ## Required when building OSAL Unit Tests.
 ##
 ## Current selections include:
-## 
+##
 ## BSP = pc-linux-ut         -- Unit test target
 ## BSP = pc-linux            -- Target to run on PC-linux
 ## BSP = genppc-vxworks6.4   -- vxWorks Power PC target
 ## BSP = mcf5235-rtems       -- RTEMS Coldfire evaluation board
 ## BSP = sis-rtems           -- RTEMS Sparc Instruction Simulator (GDB)
 ##---------------------------------------------------------
-BSP = pc-linux
+BSP = pc-composite

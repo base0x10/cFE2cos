@@ -16,7 +16,7 @@ TARGET = osal.o
 #==============================================================================
 # Object files required to build subsystem.
 
-OBJS=osapi.o osfilesys.o osfileapi.o osnetwork.o osloader.o ostimer.o
+OBJS=osapi.o
 
 #==============================================================================
 # Source files required to build subsystem; used to generate dependencies.
