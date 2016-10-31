@@ -13,22 +13,22 @@
 ** $Date: 2009/07/31 10:20:30GMT-05:00 $
 ** $Revision: 1.3 $
 ** $Log: network_includes.h  $
-** Revision 1.3 2009/07/31 10:20:30GMT-05:00 acudmore 
+** Revision 1.3 2009/07/31 10:20:30GMT-05:00 acudmore
 ** Updated RTEMS section to define a MSG_DONTWAIT flag that ci_lab uses.
-** Revision 1.2 2009/07/17 14:18:09EDT acudmore 
+** Revision 1.2 2009/07/17 14:18:09EDT acudmore
 ** Updated includes to prevent warnings from ARC suggestions.
-** Revision 1.1 2008/04/17 08:05:27EDT ruperera 
+** Revision 1.1 2008/04/17 08:05:27EDT ruperera
 ** Initial revision
 ** Member added to project c:/MKSDATA/MKS-REPOSITORY/MKS-CFE-PROJECT/fsw/cfe-core/src/inc/project.pj
-** Revision 1.5 2006/06/08 14:20:29EDT apcudmore 
+** Revision 1.5 2006/06/08 14:20:29EDT apcudmore
 ** Re-ordered include files to prevent warnings/errors for vxWorks and REMS
-** Revision 1.4 2006/03/03 16:28:38GMT apcudmore 
+** Revision 1.4 2006/03/03 16:28:38GMT apcudmore
 ** Created conditional compilation for systems that dont have the fcntl function
-** Revision 1.3 2006/03/03 15:11:03GMT apcudmore 
+** Revision 1.3 2006/03/03 15:11:03GMT apcudmore
 ** Fixed non-blocking socket problem with CI
-** Revision 1.2 2005/07/29 18:16:40GMT apcudmore 
+** Revision 1.2 2005/07/29 18:16:40GMT apcudmore
 ** Updated for mac and linux builds
-** Revision 1.1 2005/06/09 09:57:51CDT rperera 
+** Revision 1.1 2005/06/09 09:57:51CDT rperera
 ** Initial revision
 ** Member added to project d:/mksdata/MKS-CFE-REPOSITORY/cfe-core/inc/project.pj
 ** Revision 1.1  2005/03/23 16:04:15  rmcgraw
@@ -84,6 +84,9 @@
     #ifndef MSG_DONTWAIT
       #define MSG_DONTWAIT 0
     #endif
+
+#elif _COMPOSITE_OS_
+    #error "Composite lacks a networking stack!"
 
 #else
     #error "No OS defined!"
