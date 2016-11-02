@@ -16,9 +16,9 @@ TARGET = osal.o
 #==============================================================================
 # Object files required to build subsystem.
 
-OBJS=osapi.o
+OBJS=osapi_stub.o
 
 #==============================================================================
 # Source files required to build subsystem; used to generate dependencies.
 
-SOURCES = $(OBJS:.o=.c)
+SOURCES=osapi_stub.c

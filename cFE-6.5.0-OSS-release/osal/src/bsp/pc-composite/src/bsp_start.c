@@ -14,7 +14,7 @@
 **   OSAL BSP main entry point.
 **
 ** History:
-**   2016/10/28  G. Peach   | Initial version for composite 
+**   2016/10/28  G. Peach   | Initial version for composite
 **
 ******************************************************************************/
 
@@ -39,7 +39,7 @@ void OS_Application_Startup(void);
 
 
 /******************************************************************************
-**  Function:  main()
+**  Function:  cos_init()
 **
 **  Purpose:
 **    BSP Application entry point.
@@ -51,7 +51,7 @@ void OS_Application_Startup(void);
 **    (none)
 */
 
-int main(int argc, char *argv[])
+void cos_init(void)
 {
    /*
    ** OS_API_Init is called by OS_Application_Startup
