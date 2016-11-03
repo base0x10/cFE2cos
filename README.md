@@ -44,6 +44,25 @@ cd cFE2cos/
 ./provision.sh
 ```
 
+### Building and Running the cFE on Composite
+
+This is the main purpose of our project, so hopefully you're eager to get the
+cFE running on Composite!
+
+```shell
+# Starting from the cFE2cos directory on your development VM (or machine)
+
+# To build the project
+cd build
+./make.py
+
+# And to run it
+cd ../composite/transfer
+./qemu.sh cFE_boot.o
+```
+
+Note: This build is very much a work in progress, so if it breaks, feel free to
+file an issue!
 
 ### Building and Running Composite
 
