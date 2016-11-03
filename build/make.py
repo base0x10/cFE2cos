@@ -9,18 +9,20 @@ ROOT = "./"
 print "ROOT: {}".format(ROOT)
 
 COMPOSITE_DIR = ROOT + "../composite/"
+COMPOSITE_TRANSFER_DIR = COMPOSITE_DIR + "transfer/"
 COMPOSITE_MAKE_ROOT = COMPOSITE_DIR + "src/"
 COMPOSITE_CFE_COMPONENT_ROOT = COMPOSITE_DIR + "src/components/implementation/no_interface/cFE_booter/"
-COMPOSITE_CFE_HEADER_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + "/gen/"
+COMPOSITE_CFE_HEADER_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + "gen/"
 print "COMPOSITE_DIR: {}".format(COMPOSITE_DIR)
+print "COMPOSITE_TRANSFER_DIR: {}".format(COMPOSITE_TRANSFER_DIR)
 print "COMPOSITE_MAKE_ROOT: {}".format(COMPOSITE_MAKE_ROOT)
 print "COMPOSITE_CFE_COMPONENT_ROOT: {}".format(COMPOSITE_CFE_COMPONENT_ROOT)
 print "COMPOSITE_CFE_HEADER_DESTINATION: {}".format(COMPOSITE_CFE_HEADER_DESTINATION)
 
-CFE_DIR = ROOT + "/../cFE-6.5.0-OSS-release/"
+CFE_DIR = ROOT + "../cFE-6.5.0-OSS-release/"
 CFE_MAKE_ROOT = CFE_DIR + "build/cpu1/"
 CFE_OBJECT_LOCATION = CFE_MAKE_ROOT + "exe/"
-CFE_OBJECT_NAME = "core-composite.o"
+CFE_OBJECT_NAME = "composite_cFE.o"
 print "CFE_DIR: {}".format(CFE_DIR)
 print "CFE_MAKE_ROOT: {}".format(CFE_MAKE_ROOT)
 print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
@@ -29,7 +31,7 @@ print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
 #TODO: Implement header copying
 CFE_HEADERS_TO_COPY = []
 
-IGNORE_CLOCK_SKEW = True
+IGNORE_CLOCK_SKEW = False
 OUT = ""
 if(IGNORE_CLOCK_SKEW):
     print "IGNORE_CLOCK_SKEW = TRUE"
@@ -39,6 +41,7 @@ if(IGNORE_CLOCK_SKEW):
 
 # Execute build
 print("=== Cleaning composite ===")
+sp.check_call("rm -rf *", shell=True, cwd=COMPOSITE_TRANSFER_DIR)
 sp.check_call("make clean" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 
 print("=== Cleaning cFE ===")
@@ -56,11 +59,13 @@ sp.check_call("make" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 print("=== Copying cFE Object ===")
 OBJECT_SOURCE = CFE_OBJECT_LOCATION + CFE_OBJECT_NAME
 OBJECT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + CFE_OBJECT_NAME
+if os.path.exists(OBJECT_DESTINATION):
+    os.remove(OBJECT_DESTINATION)
+if not os.path.exists(OBJECT_SOURCE):
+    raise RuntimeError("Could not find cFE object to copy!")
 shutil.copy(OBJECT_SOURCE, OBJECT_DESTINATION)
 print("Copied {} to {}".format(OBJECT_SOURCE, OBJECT_DESTINATION))
 
 print("=== Building composite ===")
-sp.check_call("make config" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
-sp.check_call("make init" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make cp" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)

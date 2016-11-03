@@ -10,7 +10,7 @@
 ##
 ## Executable target. This is target specific
 ##
-EXE_TARGET=core-composite.o
+EXE_TARGET=composite_cFE.o
 
 CORE_INSTALL_FILES = $(EXE_TARGET)
 
