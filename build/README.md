@@ -11,6 +11,18 @@ how to build and run the cFE on composite:
 # Starting from the cFE2cos directory on your development VM (or machine)
 
 # To build the project
+# Run this the first time you build
+cd composite/src
+make config
+make init
+cd ../..
+
+# Run this every time you reboot
+cd cFE-6.5.0-OSS-release
+. ./setvars.sh
+cd ..
+
+# And run this every time you want to rebuild
 cd build
 ./make.py
 cd ..

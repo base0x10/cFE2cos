@@ -5,10 +5,10 @@ import subprocess as sp
 
 # Set variables
 print("=== Setting Variables ===")
-ROOT = "./"
+ROOT = "../"
 print "ROOT: {}".format(ROOT)
 
-COMPOSITE_DIR = ROOT + "../composite/"
+COMPOSITE_DIR = ROOT + "composite/"
 COMPOSITE_TRANSFER_DIR = COMPOSITE_DIR + "transfer/"
 COMPOSITE_MAKE_ROOT = COMPOSITE_DIR + "src/"
 COMPOSITE_CFE_COMPONENT_ROOT = COMPOSITE_DIR + "src/components/implementation/no_interface/cFE_booter/"
@@ -19,7 +19,7 @@ print "COMPOSITE_MAKE_ROOT: {}".format(COMPOSITE_MAKE_ROOT)
 print "COMPOSITE_CFE_COMPONENT_ROOT: {}".format(COMPOSITE_CFE_COMPONENT_ROOT)
 print "COMPOSITE_CFE_HEADER_DESTINATION: {}".format(COMPOSITE_CFE_HEADER_DESTINATION)
 
-CFE_DIR = ROOT + "../cFE-6.5.0-OSS-release/"
+CFE_DIR = ROOT + "cFE-6.5.0-OSS-release/"
 CFE_MAKE_ROOT = CFE_DIR + "build/cpu1/"
 CFE_OBJECT_LOCATION = CFE_MAKE_ROOT + "exe/"
 CFE_OBJECT_NAME = "composite_cFE.o"
@@ -28,8 +28,11 @@ print "CFE_MAKE_ROOT: {}".format(CFE_MAKE_ROOT)
 print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
 print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
 
-#TODO: Implement header copying
-CFE_HEADERS_TO_COPY = []
+CFE_HEADERS_TO_COPY = [
+    "osal/src/os/inc/*",
+    "osal/src/bsp/pc-composite/config/osconfig.h",
+    "psp/fsw/pc-composite/inc/*",
+    "psp/fsw/inc/*"]
 
 IGNORE_CLOCK_SKEW = False
 OUT = ""
@@ -37,20 +40,23 @@ if(IGNORE_CLOCK_SKEW):
     print "IGNORE_CLOCK_SKEW = TRUE"
     OUT = " 2>&1 | grep -vP 'Clock skew|in the future'"
 
+AUTO_CLEAN = False
 
 
 # Execute build
-print("=== Cleaning composite ===")
-sp.check_call("rm -rf *", shell=True, cwd=COMPOSITE_TRANSFER_DIR)
-sp.check_call("make clean" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
-
-print("=== Cleaning cFE ===")
-sp.check_call("make clean" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
+if AUTO_CLEAN:
+    print("=== Cleaning composite ===")
+    sp.check_call("rm -rf *", shell=True, cwd=COMPOSITE_TRANSFER_DIR)
+    sp.check_call("make clean" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+    print("=== Cleaning cFE ===")
+    sp.check_call("make clean" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 
 print("=== Copying headers ===")
 if not os.path.exists(COMPOSITE_CFE_HEADER_DESTINATION):
     os.makedirs(COMPOSITE_CFE_HEADER_DESTINATION)
-# TODO: Implement me!
+for header in CFE_HEADERS_TO_COPY:
+    sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
+
 
 print("=== Building cFE ===")
 sp.check_call("make config" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
