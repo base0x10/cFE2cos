@@ -29,8 +29,10 @@ print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
 print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
 
 CFE_HEADERS_TO_COPY = [
+    "build/cpu1/inc/cfe_platform_cfg.h",
+    "build/cpu1/inc/osconfig.h",
+    "build/mission_inc/cfe_mission_cfg.h",
     "osal/src/os/inc/*",
-    "osal/src/bsp/pc-composite/config/osconfig.h",
     "psp/fsw/pc-composite/inc/*",
     "psp/fsw/inc/*"]
 
