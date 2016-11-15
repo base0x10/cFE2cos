@@ -12,6 +12,10 @@ how to build and run the cFE on composite:
 
 # To build the project
 # Run this the first time you build
+cd cFE-6.5.0-OSS-release/build/cpu1
+make config
+cd ../../..
+
 cd composite/src
 make config
 make init
@@ -29,7 +33,7 @@ cd ..
 
 # And to run it
 cd composite/transfer
-./qemu.sh cFE_boot.o
+./qemu.sh cFE_boot.sh
 ```
 
 Since the actual building code can be hard to understand, here is an overview of
