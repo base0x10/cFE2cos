@@ -3,8 +3,8 @@ Vagrant.configure(2) do |config|
 
     config.vm.provider "virtualbox" do |v|
         v.name = "cFE2cos_dev"
-        v.memory = 1024
-        v.cpus = 2
+        v.memory = 2048
+        v.cpus = 3
 
         v.customize ["modifyvm", :id, "--paravirtprovider", "kvm"]
     end

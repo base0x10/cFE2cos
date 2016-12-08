@@ -33,7 +33,7 @@ cd ..
 
 # And to run it
 cd composite/transfer
-./qemu.sh cFE_boot.sh
+./qemu.sh cFE_booter.sh
 ```
 
 Since the actual building code can be hard to understand, here is an overview of
