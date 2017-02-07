@@ -1,4 +1,5 @@
-#! /usr/bin/env python2.7
+#!/usr/bin/env python2.7
+import sys, getopt
 import os
 import shutil
 import subprocess as sp
@@ -42,11 +43,8 @@ if(IGNORE_CLOCK_SKEW):
     print "IGNORE_CLOCK_SKEW = TRUE"
     OUT = " 2>&1 | grep -vP 'Clock skew|in the future'"
 
-AUTO_CLEAN = False
-
-
 # Execute build
-if AUTO_CLEAN:
+if "-c" in sys.argv:
     print("=== Cleaning composite ===")
     sp.check_call("rm -rf *", shell=True, cwd=COMPOSITE_TRANSFER_DIR)
     sp.check_call("make clean" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
@@ -54,8 +52,11 @@ if AUTO_CLEAN:
     sp.check_call("make clean" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 
 print("=== Copying headers ===")
+
 if not os.path.exists(COMPOSITE_CFE_HEADER_DESTINATION):
+    print("cFE header destination folder not found. Creating it now.")
     os.makedirs(COMPOSITE_CFE_HEADER_DESTINATION)
+
 for header in CFE_HEADERS_TO_COPY:
     sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
 
