@@ -1,11 +1,25 @@
 #!/usr/bin/env python2.7
-import sys, getopt
+# cFE2cos build script. Builds Composite and the cFE and links the two together.
+import argparse
 import os
 import shutil
 import subprocess as sp
 
-# Set variables
-print("=== Setting Variables ===")
+# Load command line arguments.
+parser = argparse.ArgumentParser(description='Copy cFE files over to Composite and build Composite with cFE support.')
+parser.add_argument('-c', '--clean', dest='clean', action='store_true', help='Clean the Composite build directory before building it.')
+parser.add_argument('-i', '--ignore-clock-skew', dest='skew', action='store_true', help='Ignore clock skew warnings when building.')
+parser.add_argument('-f', '--first-time', dest='first', action='store_true', help='Also run init steps when building.')
+
+args = parser.parse_args()
+
+print """
+#######################
+## SETTING VARIABLES ##
+#######################
+"""
+
+# Set static variables.
 ROOT = "../"
 print "ROOT: {}".format(ROOT)
 
@@ -35,37 +49,45 @@ CFE_HEADERS_TO_COPY = [
     "build/mission_inc/cfe_mission_cfg.h",
     "osal/src/os/inc/*",
     "psp/fsw/pc-composite/inc/*",
-    "psp/fsw/inc/*"]
+    "psp/fsw/inc/*"
+]
 
-IGNORE_CLOCK_SKEW = False
+# Just some shell magic to load the environment variable exports needed to build cFE.
+cfe_env = sp.Popen(["bash", "-c", "trap 'env' exit; cd {} && source \"$1\" > /dev/null 2>&1".format(CFE_DIR),
+       "_", "setvars.sh"], shell=False, stdout=sp.PIPE).communicate()[0]
+os.environ.update(dict([line.split('=', 1) for line in filter(None, cfe_env.split("\n"))]))
+
+print """
+##############
+## BUILDING ##
+##############
+"""
+
 OUT = ""
-if(IGNORE_CLOCK_SKEW):
-    print "IGNORE_CLOCK_SKEW = TRUE"
+if args.skew:
+    "Warnings about clock skew will not be printed."
     OUT = " 2>&1 | grep -vP 'Clock skew|in the future'"
 
 # Execute build
-if "-c" in sys.argv:
-    print("=== Cleaning composite ===")
+if args.clean:
+    print "=== Cleaning Composite ==="
     sp.check_call("rm -rf *", shell=True, cwd=COMPOSITE_TRANSFER_DIR)
     sp.check_call("make clean" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
-    print("=== Cleaning cFE ===")
+    print "=== Cleaning cFE ==="
     sp.check_call("make clean" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 
-print("=== Copying headers ===")
-
+print "=== Copying headers ==="
 if not os.path.exists(COMPOSITE_CFE_HEADER_DESTINATION):
-    print("cFE header destination folder not found. Creating it now.")
+    print "cFE header destination folder not found. Creating it now."
     os.makedirs(COMPOSITE_CFE_HEADER_DESTINATION)
-
 for header in CFE_HEADERS_TO_COPY:
     sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
 
-
-print("=== Building cFE ===")
+print "=== Building cFE ==="
 sp.check_call("make config" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 sp.check_call("make" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 
-print("=== Copying cFE Object ===")
+print "=== Copying cFE Object ==="
 OBJECT_SOURCE = CFE_OBJECT_LOCATION + CFE_OBJECT_NAME
 OBJECT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + CFE_OBJECT_NAME
 if os.path.exists(OBJECT_DESTINATION):
@@ -73,8 +95,12 @@ if os.path.exists(OBJECT_DESTINATION):
 if not os.path.exists(OBJECT_SOURCE):
     raise RuntimeError("Could not find cFE object to copy!")
 shutil.copy(OBJECT_SOURCE, OBJECT_DESTINATION)
-print("Copied {} to {}".format(OBJECT_SOURCE, OBJECT_DESTINATION))
+print "Copied {} to {}".format(OBJECT_SOURCE, OBJECT_DESTINATION)
 
-print("=== Building composite ===")
+print "=== Building Composite ==="
+if args.first:
+    sp.check_call("make config" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+    sp.check_call("make init" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+
 sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make cp" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
