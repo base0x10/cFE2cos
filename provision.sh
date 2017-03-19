@@ -1,6 +1,8 @@
 #!/bin/bash
 
+# Update to make sure we have the latest packages
 sudo apt-get update
+
 # Tools nessesary for both composite and the cFE
 sudo apt-get -y install make
 
@@ -23,3 +25,6 @@ sudo apt-get -y install systemtap
 # Useful general purpose tools
 sudo apt-get -y install git
 sudo apt-get -y install ntp
+
+# Link .bash_aliases to the cFE2cos script
+ln -s /home/vagrant/cFE2cos/cFE2cos.sh /home/vagrant/.bash_aliases

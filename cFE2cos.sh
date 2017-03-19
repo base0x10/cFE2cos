@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# TODO: Replace this with a Makefile instead of a janky script
+
+alias errcho='>&2 printf'
+
+function cFE2cos {
+    start_dir=`pwd`
+
+    if [ "$1" == 'init' ]; then
+        cd ~/cFE2cos/cFE-6.5.0-OSS-release/build/cpu1
+        make config
+        if [ $? -ne 0 ]; then
+            errcho 'cFE2cos: Could not "make config" the cFE!'
+            cd $start_dir
+            return 2
+        fi
+
+        cd ~/cFE2cos/composite/src
+        make config && make init
+        if [ $? -ne 0 ]; then
+            errcho 'cFE2cos: Could not "make config && make init" composite!'
+            cd $start_dir
+            return 2
+        fi
+
+        cd $start_dir
+        return 0
+    elif [ "$1" == 'build' ]; then
+        cd ~/cFE2cos/cFE-6.5.0-OSS-release
+        source ./setvars.sh
+
+        cd ~/cFE2cos/build
+        ./make.py
+        if [ $? -ne 0 ]; then
+            errcho 'cFE2cos: make.py failed!'
+            cd $start_dir
+            return 2
+        fi
+
+        cd $start_dir
+        return 0
+    elif [ "$1" == 'run' ]; then
+        cd ~/cFE2cos/composite/transfer/
+        ./qemu.sh cFE_booter.sh
+        cd $start_dir
+        return 0
+    else
+        errcho "Unknown cFE2cos command $1 \nValid options are:\n    init\n    build\n    run\n"
+        cd $start_dir
+        return 1
+    fi
+}
+
+# Setup autocompletion
+complete -W 'init build run' 'cFE2cos'
