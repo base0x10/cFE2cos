@@ -8,10 +8,13 @@ function cFE2cos {
     start_dir=`pwd`
 
     if [ "$1" == 'init' ]; then
+        cd ~/cFE2cos/cFE-6.5.0-OSS-release
+        source ./setvars.sh
+
         cd ~/cFE2cos/cFE-6.5.0-OSS-release/build/cpu1
         make config
         if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: Could not "make config" the cFE!'
+            errcho 'cFE2cos: Could not "make config" the cFE!\n'
             cd $start_dir
             return 2
         fi
@@ -19,7 +22,7 @@ function cFE2cos {
         cd ~/cFE2cos/composite/src
         make config && make init
         if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: Could not "make config && make init" composite!'
+            errcho 'cFE2cos: Could not "make config && make init" composite!\n'
             cd $start_dir
             return 2
         fi
@@ -33,7 +36,7 @@ function cFE2cos {
         cd ~/cFE2cos/build
         ./make.py
         if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: make.py failed!'
+            errcho 'cFE2cos: make.py failed!\n'
             cd $start_dir
             return 2
         fi
