@@ -4,12 +4,14 @@ import argparse
 import os
 import shutil
 import subprocess as sp
+import glob
 
 # Load command line arguments.
 parser = argparse.ArgumentParser(description='Copy cFE files over to Composite and build Composite with cFE support.')
 parser.add_argument('-c', '--clean', dest='clean', action='store_true', help='Clean the Composite build directory before building it.')
 parser.add_argument('-i', '--ignore-clock-skew', dest='skew', action='store_true', help='Ignore clock skew warnings when building.')
 parser.add_argument('-f', '--first-time', dest='first', action='store_true', help='Also run init steps when building.')
+parser.add_argument('-u', '--unit-tests', dest='unit_tests', action='store_true', help='Build unit tests.')
 
 args = parser.parse_args()
 
@@ -42,6 +44,32 @@ print "CFE_DIR: {}".format(CFE_DIR)
 print "CFE_MAKE_ROOT: {}".format(CFE_MAKE_ROOT)
 print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
 print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
+
+COMPOSITE_CFE_UT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT+ "test/"
+OSAL_UT_DIR = CFE_DIR + "osal/src/unit-tests/"
+OSAL_UT_OBJECTS_TO_COPY = [
+    "ut_os_stubs.o",
+    "ut_oscore_binsem_test.o",
+    "ut_oscore_countsem_test.o",
+    "ut_oscore_exception_test.o",
+    "ut_oscore_interrupt_test.o",
+    "ut_oscore_misc_test.o",
+    "ut_oscore_mutex_test.o",
+    "ut_oscore_queue_test.o",
+    "ut_oscore_task_test.o",
+    "ut_oscore_test_composite.o",
+    "ut_psp_voltab_stubs.o"
+]
+OSAL_UT_HEADERS_TO_COPY = [
+    "oscore-test",
+    "osfile-test",
+    "osfilesys-test",
+    "osloader-test",
+    "osnetwork-test",
+    "osprintf-test",
+    "ostimer-test",
+    "shared"
+]
 
 CFE_HEADERS_TO_COPY = [
     "build/cpu1/inc/cfe_platform_cfg.h",
@@ -83,8 +111,24 @@ if not os.path.exists(COMPOSITE_CFE_HEADER_DESTINATION):
 for header in CFE_HEADERS_TO_COPY:
     sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
 
+if args.unit_tests:
+    print "=== Building unit tests ==="
+    sp.call("make" + OUT, shell=True, cwd=OSAL_UT_DIR)
+    if os.path.exists(COMPOSITE_CFE_UT_DESTINATION):
+        shutil.rmtree(COMPOSITE_CFE_UT_DESTINATION)
+    os.mkdir(COMPOSITE_CFE_UT_DESTINATION)
+    print "Copying UT objects..."
+    for obj in OSAL_UT_OBJECTS_TO_COPY:
+        print(obj)
+        shutil.copy(OSAL_UT_DIR + obj, COMPOSITE_CFE_UT_DESTINATION)
+        print "Copied {} to {}".format(obj, COMPOSITE_CFE_UT_DESTINATION)
+    print "Copying UT headers..."
+    for folder in OSAL_UT_HEADERS_TO_COPY:
+        shutil.copytree(OSAL_UT_DIR + folder, COMPOSITE_CFE_UT_DESTINATION + folder)
+        print "Copied {} to {}".format(folder, COMPOSITE_CFE_UT_DESTINATION)
+
 print "=== Building cFE ==="
-sp.check_call("make config" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
+
 sp.check_call("make" + OUT, shell=True, cwd=CFE_MAKE_ROOT)
 
 print "=== Copying cFE Object ==="

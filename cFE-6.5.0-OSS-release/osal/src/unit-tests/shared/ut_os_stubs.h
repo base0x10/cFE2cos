@@ -163,6 +163,8 @@ typedef struct
 ** Function prototypes
 **--------------------------------------------------------------------------------*/
 
+int OS_sprintf(char *str, const char *format, ...);
+
 void UT_os_setup(const char* logFileName);
 void UT_os_teardown(const char* testSuiteName);
 

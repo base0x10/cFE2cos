@@ -20,27 +20,12 @@ OBJS = ut_oscore_task_test.o ut_oscore_binsem_test.o ut_oscore_mutex_test.o \
        ut_oscore_countsem_test.o ut_oscore_queue_test.o ut_oscore_misc_test.o 
 
 
-ifeq ($(OS), vxworks6)
-#
-# Unit test object files specific to vxWorks platforms
-#
-    OBJS += ut_oscore_exception_test.o ut_oscore_interrupt_test.o \
-        ut_oscore_test_vxworks.o
-        
-else
-# assume Linux as the default
-#
-# Unit test object files specific to Linux platforms
-#
-    OBJS += ut_oscore_test.o
-
-endif
-    
+OBJS += ut_oscore_test.o
 
 #
 # Core object files
 # 
-OBJS += osapi.o osfileapi.o osfilesys.o osloader.o osnetwork.o ostimer.o
+OBJS += osapi_stub.o # osapi.o osfileapi.o osfilesys.o osloader.o osnetwork.o ostimer.o
 
 #
 # BSP Object files

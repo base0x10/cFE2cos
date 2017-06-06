@@ -34,7 +34,7 @@ function cFE2cos {
         source ./setvars.sh
 
         cd ~/cFE2cos/build
-        ./make.py
+        ./make.py -u
         if [ $? -ne 0 ]; then
             errcho 'cFE2cos: make.py failed!\n'
             cd $start_dir
