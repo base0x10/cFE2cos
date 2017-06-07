@@ -2,6 +2,7 @@
 
 # Update to make sure we have the latest packages
 sudo apt-get update
+sudo apt-get autoremove
 
 # Tools nessesary for both composite and the cFE
 sudo apt-get -y install make
