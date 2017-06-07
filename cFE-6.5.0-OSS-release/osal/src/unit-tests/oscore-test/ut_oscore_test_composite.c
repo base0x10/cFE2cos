@@ -182,17 +182,16 @@ void OS_Application_Startup(void)
     UT_os_set_log_verbose(UT_OS_LOG_EVERYTHING);
 
     UT_OS_LOG_MACRO("Sending test log output to stdout\n")
-    UT_OS_LOG_MACRO("Begin Composite-specific unit tests\n")
 
     UT_os_apiinit_test();
 
-    UT_OS_LOG_MACRO("\nprintf test\n")
+    UT_OS_LOG_MACRO("\n=== PRINTF TESTS ===\n")
     UT_os_printf_test();
     UT_os_printfenable_test();
     UT_os_printfdisable_test();
-    UT_OS_LOG_MACRO("============================================\n")
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
-    UT_OS_LOG_MACRO("\nbinsem test\n")
+    UT_OS_LOG_MACRO("\n=== BINSEM TESTS ===\n")
     UT_os_bin_sem_create_test();
     UT_os_bin_sem_delete_test();
     UT_os_bin_sem_flush_test();
@@ -201,7 +200,9 @@ void OS_Application_Startup(void)
     UT_os_bin_sem_timed_wait_test();
     UT_os_bin_sem_get_id_by_name_test();
     UT_os_bin_sem_get_info_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
+    UT_OS_LOG_MACRO("\n=== COUNTSEM TESTS ===\n")
     UT_os_count_sem_create_test();
     UT_os_count_sem_delete_test();
     UT_os_count_sem_give_test();
@@ -209,21 +210,27 @@ void OS_Application_Startup(void)
     UT_os_count_sem_timed_wait_test();
     UT_os_count_sem_get_id_by_name_test();
     UT_os_count_sem_get_info_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
+    UT_OS_LOG_MACRO("\n=== MUTSEM TESTS ===\n")
     UT_os_mut_sem_create_test();
     UT_os_mut_sem_delete_test();
     UT_os_mut_sem_give_test();
     UT_os_mut_sem_take_test();
     UT_os_mut_sem_get_id_by_name_test();
     UT_os_mut_sem_get_info_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
+    UT_OS_LOG_MACRO("\n=== QUEUE TESTS ===\n")
     UT_os_queue_create_test();
     UT_os_queue_delete_test();
     UT_os_queue_put_test();
     UT_os_queue_get_test();
     UT_os_queue_get_id_by_name_test();
     UT_os_queue_get_info_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
+    UT_OS_LOG_MACRO("\n=== TASK TESTS ===\n")
     UT_os_init_task_misc();
 
     UT_os_init_task_create_test();
@@ -248,24 +255,22 @@ void OS_Application_Startup(void)
     UT_os_task_register_test();
 
     UT_os_init_task_get_id_test();
-    UT_OS_LOG_MACRO("\n============================================\n")
     UT_os_task_get_id_test();
-    UT_OS_LOG_MACRO("============================================\n")
 
     UT_os_init_task_get_id_by_name_test();
     UT_os_task_get_id_by_name_test();
 
     UT_os_init_task_get_info_test();
     UT_os_task_get_info_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
+    UT_OS_LOG_MACRO("\n=== MISC TESTS ===\n")
     UT_os_geterrorname_test();
 
     UT_os_tick2micros_test();
     UT_os_milli2ticks_test();
 
-    UT_OS_LOG_MACRO("\n============================================")
     UT_os_getlocaltime_test();
-    UT_OS_LOG_MACRO("============================================\n")
     UT_os_setlocaltime_test();
 
     UT_os_heapgetinfo_test();
@@ -278,6 +283,7 @@ void OS_Application_Startup(void)
 
     UT_os_fpuexc_setmask_test();
     UT_os_fpuexc_getmask_test();
+    UT_OS_LOG_MACRO("=== DONE ===\n")
 
     UT_os_teardown("ut_oscore");
 

@@ -34,7 +34,14 @@ function cFE2cos {
         source ./setvars.sh
 
         cd ~/cFE2cos/build
-        ./make.py -u
+        if [[ "$2" == '-u' ]]; then
+            ./make.py -u
+	    echo $?
+            return 0
+        else
+            ./make.py
+        fi
+
         if [ $? -ne 0 ]; then
             errcho 'cFE2cos: make.py failed!\n'
             cd $start_dir
@@ -48,12 +55,15 @@ function cFE2cos {
         ./qemu.sh cFE_booter.sh
         cd $start_dir
         return 0
+    elif [ "$1" == 'unit-test' ]; then
+        cFE2cos build -u
+        cFE2cos run
     else
-        errcho "Unknown cFE2cos command $1 \nValid options are:\n    init\n    build\n    run\n"
+        errcho "Unknown cFE2cos command $1 \nValid options are:\n    init\n    build\n    run\n    unit-test\n"
         cd $start_dir
         return 1
     fi
 }
 
 # Setup autocompletion
-complete -W 'init build run' 'cFE2cos'
+complete -W 'init build run unit-test' 'cFE2cos'

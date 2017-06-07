@@ -45,8 +45,12 @@ print "CFE_MAKE_ROOT: {}".format(CFE_MAKE_ROOT)
 print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
 print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
 
+# UT is an abbreviation for Unit Tests.
 COMPOSITE_CFE_UT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT+ "test/"
 OSAL_UT_DIR = CFE_DIR + "osal/src/unit-tests/"
+print "OSAL_UT_DIR: {}".format(OSAL_UT_DIR)
+print "COMPOSITE_CFE_UT_DESTINATION: {}".format(COMPOSITE_CFE_UT_DESTINATION)
+
 OSAL_UT_OBJECTS_TO_COPY = [
     "ut_os_stubs.o",
     "ut_oscore_binsem_test.o",
@@ -146,5 +150,8 @@ if args.first:
     sp.check_call("make config" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
     sp.check_call("make init" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 
-sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+if args.unit_tests:
+    sp.check_call("CPPFLAGS=\"-DUNIT_TESTS\" make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+else:
+    sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make cp" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
