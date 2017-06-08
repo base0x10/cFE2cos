@@ -36,7 +36,7 @@ function cFE2cos {
         cd ~/cFE2cos/build
         if [[ "$2" == '-u' ]]; then
             ./make.py -u
-	    echo $?
+            cd $start_dir
             return 0
         else
             ./make.py
@@ -56,8 +56,19 @@ function cFE2cos {
         cd $start_dir
         return 0
     elif [ "$1" == 'unit-test' ]; then
+        cd $start_dir
         cFE2cos build -u
+        if [ $? -ne 0 ]; then
+            errcho 'The unit tests failed to build'
+            return 2
+        fi
+
         cFE2cos run
+        if [ $? -ne 0 ]; then
+            errcho 'The unit tests failed'
+            return 2
+        fi
+        return 0
     else
         errcho "Unknown cFE2cos command $1 \nValid options are:\n    init\n    build\n    run\n    unit-test\n"
         cd $start_dir

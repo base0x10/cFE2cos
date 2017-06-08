@@ -155,3 +155,14 @@ if args.unit_tests:
 else:
     sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make cp" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
+
+print "integrating cFE file system"
+sp.check_call("tar cf cFEfs.tar cf/" + OUT, shell=True, cwd=CFE_OBJECT_LOCATION)
+sp.check_call("mv cFEfs.tar ../../../../cFEfs.tar" + OUT, shell=True, cwd=CFE_OBJECT_LOCATION)
+sp.check_call("ld -r -b binary cFEfs.tar -o cFEfs.o" + OUT, shell=True, cwd=ROOT)
+sp.check_call("ld -r cFEfs.o composite/transfer/cFE_booter.o -o mergedbooter.o" + OUT, shell=True, cwd=ROOT)
+sp.check_call("cp mergedbooter.o composite/transfer/cFE_booter.o" + OUT, shell=True, cwd=ROOT)
+os.remove(ROOT+"cFEfs.o")
+os.remove(ROOT+"cFEfs.tar")
+os.remove(ROOT+"mergedbooter.o")
+
