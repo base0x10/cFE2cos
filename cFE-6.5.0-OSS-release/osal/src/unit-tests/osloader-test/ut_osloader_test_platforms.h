@@ -34,7 +34,7 @@
 /*--------------------------------------------*/
 
 /*--------------------------------------------*/
-#ifdef _VXWORKS_OS_
+#if defined(_VXWORKS_OS_) || defined(COMPOSITE_OS)
 /*--------------------------------------------*/
 
 #define UT_OS_GENERIC_MODULE_NAME1   "/cf/apps/MODULE.o"

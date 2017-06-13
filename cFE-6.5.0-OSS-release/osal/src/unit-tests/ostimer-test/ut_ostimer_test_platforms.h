@@ -97,7 +97,7 @@
 /*--------------------------------------------*/
 
 /*--------------------------------------------*/
-#ifdef _VXWORKS_OS_
+#if defined(_VXWORKS_OS_) || defined(COMPOSITE_OS)
 /*--------------------------------------------*/
 
 #define UT_OS_TIMER_DECLARE_EXTRA_VARIABLES_MACRO \
