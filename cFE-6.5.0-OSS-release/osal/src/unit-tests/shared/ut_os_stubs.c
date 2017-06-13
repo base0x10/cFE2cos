@@ -154,7 +154,7 @@ void UT_os_log_api(UT_OsApiInfo_t* apiPtr)
         g_logInfo.apiCnt++;
 
 #ifdef COMPOSITE_OS
-        OS_printf("'%s' %s: %s\n\n", apiInfo->name, testInfo->name, testInfo->result);
+        OS_printf("%s: %s %s\n\n", apiInfo->name, testInfo->name, testInfo->result);
 #endif
     }
 }
