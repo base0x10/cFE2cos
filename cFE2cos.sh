@@ -4,76 +4,100 @@
 
 alias errcho='>&2 printf'
 
-function cFE2cos {
-    start_dir=`pwd`
+function cFE2cos() {
+    local HELP_TEXT="\
+Valid options are:
+init        Initializes the Composite build
+build       Builds Composite and links it with the cFE
+run         Runs the Composite virtual machine
+unit-test   Builds and runs Composite with cFE unit testing enabled
 
-    if [ "$1" == 'init' ]; then
-        cd ~/cFE2cos/cFE-6.5.0-OSS-release
-        source ./setvars.sh
+Note that if unit-test has previously been run, subsequent calls to \`run\` will
+also run unit tests. Run \`build\` again to recompile the component without unit
+test support.\
+"
 
-        cd ~/cFE2cos/cFE-6.5.0-OSS-release/build/cpu1
-        make config
-        if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: Could not "make config" the cFE!\n'
-            cd $start_dir
-            return 2
-        fi
+    local start_dir=`pwd`
 
-        cd ~/cFE2cos/composite/src
-        make config && make init
-        if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: Could not "make config && make init" composite!\n'
-            cd $start_dir
-            return 2
-        fi
+    case "$1" in
+        init)
+            cd ~/cFE2cos/cFE-6.5.0-OSS-release
+            source ./setvars.sh
 
-        cd $start_dir
-        return 0
-    elif [ "$1" == 'build' ]; then
-        cd ~/cFE2cos/cFE-6.5.0-OSS-release
-        source ./setvars.sh
+            cd ~/cFE2cos/cFE-6.5.0-OSS-release/build/cpu1
+            make config
+            if [ $? -ne 0 ]; then
+                errcho 'cFE2cos: Could not "make config" the cFE!\n'
+                cd $start_dir
+                return 2
+            fi
 
-        cd ~/cFE2cos/build
-        if [[ "$2" == '-u' ]]; then
-            ./make.py -u
+            cd ~/cFE2cos/composite/src
+            make config && make init
+            if [ $? -ne 0 ]; then
+                errcho 'cFE2cos: Could not "make config && make init" composite!\n'
+                cd $start_dir
+                return 2
+            fi
+
             cd $start_dir
             return 0
-        else
-            ./make.py
-        fi
+            ;;
 
-        if [ $? -ne 0 ]; then
-            errcho 'cFE2cos: make.py failed!\n'
+        build)
+            cd ~/cFE2cos/cFE-6.5.0-OSS-release
+            source ./setvars.sh
+
+            cd ~/cFE2cos/build
+            if [ "$UNIT_TEST" == true ]; then
+                ./make.py -u
+                cd $start_dir
+                return 0
+            else
+                ./make.py
+            fi
+
+            if [ $? -ne 0 ]; then
+                errcho 'cFE2cos: make.py failed!\n'
+                cd $start_dir
+                return 2
+            fi
+
             cd $start_dir
-            return 2
-        fi
+            return 0
+            ;;
 
-        cd $start_dir
-        return 0
-    elif [ "$1" == 'run' ]; then
-        cd ~/cFE2cos/composite/transfer/
-        ./qemu.sh cFE_booter.sh
-        cd $start_dir
-        return 0
-    elif [ "$1" == 'unit-test' ]; then
-        cd $start_dir
-        cFE2cos build -u
-        if [ $? -ne 0 ]; then
-            errcho 'The unit tests failed to build'
-            return 2
-        fi
+        run)
+            echo "Initializing cFE VM..."
+            cd ~/cFE2cos/composite/transfer/
+            ./qemu.sh cFE_booter.sh
+            cd $start_dir
+            return 0
+            ;;
 
-        cFE2cos run
-        if [ $? -ne 0 ]; then
-            errcho 'The unit tests failed'
-            return 2
-        fi
-        return 0
-    else
-        errcho "Unknown cFE2cos command $1 \nValid options are:\n    init\n    build\n    run\n    unit-test\n"
-        cd $start_dir
-        return 1
-    fi
+        unit-test)
+            cd $start_dir
+            UNIT_TEST=true cFE2cos build
+            if [ $? -ne 0 ]; then
+                errcho 'The unit tests failed to build'
+                return 2
+            fi
+
+            cFE2cos run
+            if [ $? -ne 0 ]; then
+                errcho 'The unit tests failed'
+                return 2
+            fi
+            return 0
+            ;;
+
+        *)
+            errcho "Unknown cFE2cos command \`$1\`\n"
+            errcho "$HELP_TEXT\n"
+            cd $start_dir
+            return 1
+            ;;
+    esac
 }
 
 # Setup autocompletion
