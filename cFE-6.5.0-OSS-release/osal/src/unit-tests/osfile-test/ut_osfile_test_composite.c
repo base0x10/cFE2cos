@@ -124,10 +124,12 @@ void Composite_UT_osfile(void)
 
     if (UT_os_setup_fs() == OS_FS_SUCCESS)
     {
-        /* TODO: Better indication of logging sections. */
+        UT_CAT_HEADER("misc");
         UT_os_init_file_misc();
+        UT_CAT_END;
 
         /* Directory I/O APIs */
+        UT_CAT_HEADER("directory");
         UT_os_makedir_test();
         UT_os_opendir_test();
         UT_os_closedir_test();
@@ -135,8 +137,10 @@ void Composite_UT_osfile(void)
         UT_os_readdir_test();
         UT_os_rewinddir_test();
         UT_os_removedir_test();
+        UT_CAT_END;
 
         /* File I/O APIs */
+        UT_CAT_HEADER("file");
         UT_os_createfile_test();
         UT_os_openfile_test();
         UT_os_closefile_test();
@@ -160,6 +164,7 @@ void Composite_UT_osfile(void)
 
         UT_os_closeallfiles_test();
         UT_os_closefilebyname_test();
+        UT_CAT_END;
 
         UT_os_teardown_fs();
     }

@@ -127,6 +127,9 @@ void UT_os_log_api(UT_OsApiInfo_t* apiPtr)
         apiInfo->tstCnt = apiPtr->tstCnt;
         g_logInfo.totalTstCnt += apiInfo->tstCnt;
 
+        /* Composite-specific result printing. */
+        OS_printf("\nTesting %s:\n", apiInfo->name);
+
         for (i=0; i < apiInfo->tstCnt; i++)
         {
             testPtr  = &(apiPtr->tests[i]);
@@ -137,18 +140,45 @@ void UT_os_log_api(UT_OsApiInfo_t* apiPtr)
             strncpy(testInfo->name,   testPtr->name,   strlen(testPtr->name));
             strncpy(testInfo->result, testPtr->result, strlen(testPtr->result));
 
+            /* Composite-specific output. */
+            char *readableTestResult;
+
             if (strcmp(testInfo->result, UT_OS_PASSED) == 0)
+            {
                 g_logInfo.nPassed++;
+                readableTestResult = "Passed";
+            }
             else if (strcmp(testInfo->result, UT_OS_FAILED) == 0)
+            {
                 g_logInfo.nFailed++;
+                readableTestResult = "Failed";
+            }
             else if (strcmp(testInfo->result, UT_OS_MIR) == 0)
+            {
                 g_logInfo.nMir++;
+                readableTestResult = "Manual inspection required";
+            }
             else if (strcmp(testInfo->result, UT_OS_NA) == 0)
+            {
                 g_logInfo.nNa++;
+                readableTestResult = "Not applicable to this platform";
+            }
             else if (strcmp(testInfo->result, UT_OS_UOF) == 0)
+            {
                 g_logInfo.nUof++;
+                readableTestResult = "Untested OS-call-failure";
+            }
             else if (strcmp(testInfo->result, UT_OS_TSF) == 0)
+            {
             	g_logInfo.nTsf++;
+                readableTestResult = "Test failed during setup process";
+            }
+            else
+            {
+                readableTestResult = "Unknown test result";
+            }
+
+            OS_printf("Test name: %s\n\tResult: %s\n", testInfo->name, readableTestResult);
         }
 
         g_logInfo.apiCnt++;

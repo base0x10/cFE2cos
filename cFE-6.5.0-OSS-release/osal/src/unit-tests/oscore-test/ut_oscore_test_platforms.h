@@ -67,7 +67,7 @@
 /*--------------------------------------------*/
 
 #ifdef COMPOSITE_OS
-// TODO: Implement me!
+/* Copied implementation from ARINC653 */
 #define UT_OS_WAIT_MACRO for (int j = 0; j < 10000; j++) {  }
 #endif
 

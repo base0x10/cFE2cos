@@ -186,13 +186,13 @@ void Composite_UT_oscore(void)
 
     UT_os_apiinit_test();
 
-    UT_OS_LOG_MACRO("\n=== PRINTF TESTS ===\n")
+    UT_CAT_HEADER("printf");
     UT_os_printf_test();
     UT_os_printfenable_test();
     UT_os_printfdisable_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== BINSEM TESTS ===\n")
+    UT_CAT_HEADER("binsem");
     UT_os_bin_sem_create_test();
     UT_os_bin_sem_delete_test();
     UT_os_bin_sem_flush_test();
@@ -201,9 +201,9 @@ void Composite_UT_oscore(void)
     UT_os_bin_sem_timed_wait_test();
     UT_os_bin_sem_get_id_by_name_test();
     UT_os_bin_sem_get_info_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== COUNTSEM TESTS ===\n")
+    UT_CAT_HEADER("countsem");
     UT_os_count_sem_create_test();
     UT_os_count_sem_delete_test();
     UT_os_count_sem_give_test();
@@ -211,27 +211,27 @@ void Composite_UT_oscore(void)
     UT_os_count_sem_timed_wait_test();
     UT_os_count_sem_get_id_by_name_test();
     UT_os_count_sem_get_info_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== MUTSEM TESTS ===\n")
+    UT_CAT_HEADER("mutsem");
     UT_os_mut_sem_create_test();
     UT_os_mut_sem_delete_test();
     UT_os_mut_sem_give_test();
     UT_os_mut_sem_take_test();
     UT_os_mut_sem_get_id_by_name_test();
     UT_os_mut_sem_get_info_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== QUEUE TESTS ===\n")
+    UT_CAT_HEADER("queue");
     UT_os_queue_create_test();
     UT_os_queue_delete_test();
     UT_os_queue_put_test();
     UT_os_queue_get_test();
     UT_os_queue_get_id_by_name_test();
     UT_os_queue_get_info_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== TASK TESTS ===\n")
+    UT_CAT_HEADER("task");
     UT_os_init_task_misc();
 
     UT_os_init_task_create_test();
@@ -263,9 +263,9 @@ void Composite_UT_oscore(void)
 
     UT_os_init_task_get_info_test();
     UT_os_task_get_info_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
-    UT_OS_LOG_MACRO("\n=== MISC TESTS ===\n")
+    UT_CAT_HEADER("misc");
     UT_os_geterrorname_test();
 
     UT_os_tick2micros_test();
@@ -284,7 +284,7 @@ void Composite_UT_oscore(void)
 
     UT_os_fpuexc_setmask_test();
     UT_os_fpuexc_getmask_test();
-    UT_OS_LOG_MACRO("=== DONE ===\n")
+    UT_CAT_END;
 
     UT_os_teardown("ut_oscore");
 

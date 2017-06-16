@@ -55,12 +55,16 @@ void Composite_UT_osloader(void)
 
     OS_API_Init();
 
+    UT_CAT_HEADER("module");
     UT_os_module_load_test();
     UT_os_module_unload_test();
     UT_os_module_info_test();
+    UT_CAT_END;
 
+    UT_CAT_HEADER("symbol");
     UT_os_symbol_lookup_test();
     UT_os_symbol_table_dump_test();
+    UT_CAT_END;
 
     UT_os_teardown("ut_osloader");
 

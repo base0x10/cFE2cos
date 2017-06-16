@@ -11,12 +11,8 @@ COMPOSITE_FILES := $(foreach dir,$(SUBDIRS),$(wildcard $(dir)/*_composite.c))
 IGNORE := $(OTHER_ARCH_FILES) shared/ut_osloader_stubs.c $(COMPOSITE_FILES:_composite.c=.c)
 SOURCE_FILES := $(filter-out $(IGNORE), $(foreach dir,$(SUBDIRS),$(wildcard $(dir)/*.c))) shared/ut_main_composite.h
 
-CFLAGS = -std=$(C_VERSION) -DOS_USE_EMBEDDED_PRINTF -DLOG_TO_STDOUT_TOO -DCOMPOSITE_OS -fno-stack-protector -c -I ../bsp/pc-composite/config -I ./shared -I ../os/inc -I ./osfile-test
+CFLAGS = -std=$(C_VERSION) -DOS_USE_EMBEDDED_PRINTF -DLOG_TO_STDOUT_TOO -DCOMPOSITE_OS -fno-stack-protector -c -I ../bsp/pc-composite/config -I ./shared -I ../os/inc
 
 all:
-	$(CC) $(CFLAGS) $(SOURCE_FILES)
-
-clean:
 	rm $(wildcard *.o)
-
-.PHONY: clean
+	$(CC) $(CFLAGS) $(SOURCE_FILES)

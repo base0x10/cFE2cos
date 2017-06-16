@@ -120,14 +120,21 @@ void Composite_UT_osfilesys(void)
 
     OS_API_Init();
 
+    /* Note that sections here are kind of ambiguous. */
+
+    UT_CAT_HEADER("misc");
     UT_os_print_volumetable("VOLUME TABLE _AFTER_ OS_API_Init() call");
 
     UT_os_init_fs_misc();
+    UT_CAT_END;
 
+    UT_CAT_HEADER("fs");
     UT_os_makefs_test();
     UT_os_initfs_test();
     UT_os_removefs_test();
+    UT_CAT_END;
 
+    UT_CAT_HEADER("drive");
     UT_os_mount_test();
     UT_os_unmount_test();
 
@@ -140,6 +147,7 @@ void Composite_UT_osfilesys(void)
 
     UT_os_fsblocksfree_test();
     UT_os_fsbytesfree_test();
+    UT_CAT_END;
 
     UT_os_teardown("ut_osfilesys");
 

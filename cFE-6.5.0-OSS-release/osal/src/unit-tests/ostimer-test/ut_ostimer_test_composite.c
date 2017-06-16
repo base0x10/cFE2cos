@@ -191,8 +191,11 @@ void UT_timertest_task(void)
 {
    OS_TaskRegister();
 
+   UT_CAT_HEADER("misc");
    UT_os_init_timer_misc();
+   UT_CAT_END;
 
+   UT_CAT_HEADER("general");
    UT_os_setup_timercreate_test();
    UT_os_timercreate_test();
 
@@ -204,11 +207,14 @@ void UT_timertest_task(void)
 
    UT_os_setup_timergetinfo_test();
    UT_os_timergetinfo_test();
+   UT_CAT_END;
 
+   UT_CAT_HEADER("timerset");
    UT_os_setup_timerset_test();
    UT_OS_LOG_MACRO("\n============================================\n")
    UT_os_timerset_test();
    UT_OS_LOG_MACRO("============================================\n")
+   UT_CAT_END;
 
    UT_os_teardown("ut_ostimer");
 
