@@ -192,6 +192,8 @@ UT_os_sample_test_exit_tag:
 **   5) Expect the returned value to be
 **        (a) OS_FS_SUCCESS
 **--------------------------------------------------------------------------------*/
+
+#ifndef COMPOSITE_OS
 void UT_os_initfs_test()
 {
     UT_OsApiInfo_t apiInfo;
@@ -289,6 +291,7 @@ UT_os_initfs_test_exit_tag:
     UT_OS_SET_API_NAME_AND_TEST_COUNT_MACRO(apiInfo, "OS_initfs", idx)
     UT_OS_LOG_API_MACRO(apiInfo)
 }
+#endif
 
 /*--------------------------------------------------------------------------------*
 ** Syntax: int32 OS_mkfs(char *address, char *devname, char *volname, uint32 blocksize, uint32 numblocks)

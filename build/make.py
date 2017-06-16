@@ -51,18 +51,12 @@ OSAL_UT_DIR = CFE_DIR + "osal/src/unit-tests/"
 print "OSAL_UT_DIR: {}".format(OSAL_UT_DIR)
 print "COMPOSITE_CFE_UT_DESTINATION: {}".format(COMPOSITE_CFE_UT_DESTINATION)
 
-OSAL_UT_OBJECTS_TO_COPY = [
-    "ut_os_stubs.o",
-    "ut_oscore_binsem_test.o",
-    "ut_oscore_countsem_test.o",
-    "ut_oscore_exception_test.o",
-    "ut_oscore_interrupt_test.o",
-    "ut_oscore_misc_test.o",
-    "ut_oscore_mutex_test.o",
-    "ut_oscore_queue_test.o",
-    "ut_oscore_task_test.o",
-    "ut_oscore_test_composite.o",
-    "ut_psp_voltab_stubs.o"
+# We don't need these stubs because we already provide our own; copying them over causes duplicate symbol errors
+OSAL_UT_OBJECTS_TO_SKIP = [
+    "ut_osfile_stubs.o",
+    "ut_osfilesys_stubs.o",
+    "ut_osnetwork_stubs.o",
+    "ut_ostimer_stubs.o"
 ]
 OSAL_UT_HEADERS_TO_COPY = [
     "oscore-test",
@@ -116,16 +110,19 @@ for header in CFE_HEADERS_TO_COPY:
     sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
 
 if args.unit_tests:
+    import fnmatch
+
     print "=== Building unit tests ==="
     sp.call("make" + OUT, shell=True, cwd=OSAL_UT_DIR)
+    print "Cleaning old test objects..."
     if os.path.exists(COMPOSITE_CFE_UT_DESTINATION):
         shutil.rmtree(COMPOSITE_CFE_UT_DESTINATION)
     os.mkdir(COMPOSITE_CFE_UT_DESTINATION)
     print "Copying UT objects..."
-    for obj in OSAL_UT_OBJECTS_TO_COPY:
-        print(obj)
-        shutil.copy(OSAL_UT_DIR + obj, COMPOSITE_CFE_UT_DESTINATION)
-        print "Copied {} to {}".format(obj, COMPOSITE_CFE_UT_DESTINATION)
+    for obj in os.listdir(OSAL_UT_DIR):
+            if not obj in OSAL_UT_OBJECTS_TO_SKIP and os.path.isfile(OSAL_UT_DIR + obj):
+                shutil.copy(OSAL_UT_DIR + obj, COMPOSITE_CFE_UT_DESTINATION)
+                print "Copied {} to {}".format(obj, COMPOSITE_CFE_UT_DESTINATION)
     print "Copying UT headers..."
     for folder in OSAL_UT_HEADERS_TO_COPY:
         shutil.copytree(OSAL_UT_DIR + folder, COMPOSITE_CFE_UT_DESTINATION + folder)

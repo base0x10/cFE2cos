@@ -12,6 +12,9 @@
 #include "ut_oscore_exception_test.h"
 #include "ut_oscore_interrupt_test.h"
 
+#include "ut_main_composite.h"
+#include "ut_misc_composite.h"
+
 /*--------------------------------------------------------------------------------*
 ** Macros
 **--------------------------------------------------------------------------------*/
@@ -29,9 +32,6 @@ extern UT_OsLogInfo_t  g_logInfo;
 /*--------------------------------------------------------------------------------*
 ** Global variables
 **--------------------------------------------------------------------------------*/
-
-int32  g_skipTestCase = -1;
-char*  g_skipTestCaseResult = " ";
 
 char* g_task_names[UT_OS_TASK_LIST_LEN];
 char  g_long_task_name[OS_MAX_API_NAME+5];
@@ -174,8 +174,9 @@ void UT_os_init_task_get_info_test()
 ** Main
 **--------------------------------------------------------------------------------*/
 
-void OS_Application_Startup(void)
+void Composite_UT_oscore(void)
 {
+    Composite_UT_reset_skip_values();
     UT_os_setup(UT_OS_LOG_FILENAME);
 
     /* UT_OS_LOG_OFF, UT_OS_LOG_MINIMAL, UT_OS_LOG_MODERATE, UT_OS_LOG_EVERYTHING */
