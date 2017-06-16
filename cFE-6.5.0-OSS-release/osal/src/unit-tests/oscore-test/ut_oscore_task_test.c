@@ -18,7 +18,7 @@
 #define UT_TASK_PRIORITY       111
 
 /* This is not global in the OSAL */
-#define MAX_PRIORITY  255    
+#define MAX_PRIORITY  255
 
 /*--------------------------------------------------------------------------------*
 ** Data types
@@ -152,7 +152,7 @@ void generic_test_task(void)
 
     task_id = OS_TaskGetId();
     OS_TaskGetInfo(task_id, &task_prop);
-   
+
     UT_OS_LOG_MACRO("Starting GenericTask: %s, id: %d\n", task_prop.name, (int)task_id);
 
     while (1)
@@ -438,7 +438,7 @@ void delete_handler_test_task(void)
 
     g_task_result = OS_TaskInstallDeleteHandler(&delete_handler_callback);
 
-    /* 
+    /*
     ** Release the semaphore so the main function can record the results of the test
     ** and clean up
     */
@@ -739,7 +739,7 @@ void UT_os_task_set_priority_test()
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_PASSED)
         else
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_FAILED)
-    
+
         /* Delay to let child task run */
         OS_TaskDelay(500);
 
@@ -769,7 +769,7 @@ void UT_os_task_set_priority_test()
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_PASSED)
         else
             UT_OS_SET_TEST_RESULT_MACRO(apiInfo, idx, testDesc, UT_OS_FAILED)
-    
+
         /* Delay to let child task run */
         OS_TaskDelay(500);
 
@@ -805,7 +805,7 @@ void register_test_task(void)
     memset(text, '\0', sizeof(text));
     UT_OS_LOG_MACRO("Starting RegisterTest Task: %s\n", task_prop.name);
 
-    /* 
+    /*
     ** Release the semaphore so the main function can record the results of the test
     ** and clean up
     */
