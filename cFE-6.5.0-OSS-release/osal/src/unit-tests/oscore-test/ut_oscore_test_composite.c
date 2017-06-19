@@ -184,7 +184,8 @@ void Composite_UT_oscore(void)
 
     UT_OS_LOG_MACRO("Sending test log output to stdout\n")
 
-    UT_os_apiinit_test();
+    // NOTE: This test doesn't make sense for composite, since we'll always call OS_API_Init first
+    // UT_os_apiinit_test();
 
     UT_CAT_HEADER("printf");
     UT_os_printf_test();
@@ -277,14 +278,15 @@ void Composite_UT_oscore(void)
 
     UT_os_heapgetinfo_test();
 
-    UT_os_int_attachhandler_test();
-    UT_os_int_enable_test();
-    UT_os_int_disable_test();
-    UT_os_int_lock_test();
-    UT_os_int_unlock_test();
+    // FIXME: These tests don't make sense for composite right now
+    // UT_os_int_attachhandler_test();
+    // UT_os_int_enable_test();
+    // UT_os_int_disable_test();
+    // UT_os_int_lock_test();
+    // UT_os_int_unlock_test();
+    // UT_os_fpuexc_setmask_test();
+    // UT_os_fpuexc_getmask_test();
 
-    UT_os_fpuexc_setmask_test();
-    UT_os_fpuexc_getmask_test();
     UT_CAT_END;
 
     UT_os_teardown("ut_oscore");
