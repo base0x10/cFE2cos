@@ -171,7 +171,7 @@ void Composite_UT_osfile(void)
 
     UT_os_teardown("ut_osfile");
 
-    OS_ApplicationExit(g_logInfo.nFailed > 0);
+    //OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 
 /*================================================================================*

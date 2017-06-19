@@ -151,7 +151,7 @@ void Composite_UT_osfilesys(void)
 
     UT_os_teardown("ut_osfilesys");
 
-    OS_ApplicationExit(g_logInfo.nFailed > 0);
+    //OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 
 /*================================================================================*

@@ -62,7 +62,7 @@ void Composite_UT_osnetwork(void)
 
     UT_os_teardown("ut_osnetwork");
 
-    OS_ApplicationExit(g_logInfo.nFailed > 0);
+    //OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 
 /*================================================================================*

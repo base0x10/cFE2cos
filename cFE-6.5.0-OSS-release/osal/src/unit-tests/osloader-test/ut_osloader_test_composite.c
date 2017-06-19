@@ -68,7 +68,7 @@ void Composite_UT_osloader(void)
 
     UT_os_teardown("ut_osloader");
 
-    OS_ApplicationExit(g_logInfo.nFailed > 0);
+    //OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 
 /*================================================================================*

@@ -272,6 +272,7 @@ void Composite_UT_oscore(void)
     UT_os_milli2ticks_test();
 
     UT_os_getlocaltime_test();
+
     UT_os_setlocaltime_test();
 
     UT_os_heapgetinfo_test();
@@ -288,7 +289,7 @@ void Composite_UT_oscore(void)
 
     UT_os_teardown("ut_oscore");
 
-    OS_ApplicationExit(g_logInfo.nFailed > 0);
+    //OS_ApplicationExit(g_logInfo.nFailed > 0);
 }
 
 /*================================================================================*
