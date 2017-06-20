@@ -245,7 +245,7 @@ void Composite_UT_oscore(void)
     // FIXME: These tests hang
     // UT_os_setup_install_delete_handler_test();
     // UT_os_task_install_delete_handler_test();
-
+    //
     // UT_os_init_task_exit_test();
     // UT_os_task_exit_test();
 
