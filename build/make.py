@@ -4,7 +4,6 @@ import argparse
 import os
 import shutil
 import subprocess as sp
-import glob
 
 # Load command line arguments.
 parser = argparse.ArgumentParser(description='Copy cFE files over to Composite and build Composite with cFE support.')
@@ -46,7 +45,7 @@ print "CFE_OBJECT_LOCATION: {}".format(CFE_OBJECT_LOCATION)
 print "CFE_OBJECT_NAME: {}".format(CFE_OBJECT_NAME)
 
 # UT is an abbreviation for Unit Tests.
-COMPOSITE_CFE_UT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT+ "test/"
+COMPOSITE_CFE_UT_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + "test/"
 OSAL_UT_DIR = CFE_DIR + "osal/src/unit-tests/"
 print "OSAL_UT_DIR: {}".format(OSAL_UT_DIR)
 print "COMPOSITE_CFE_UT_DESTINATION: {}".format(COMPOSITE_CFE_UT_DESTINATION)
@@ -73,14 +72,16 @@ CFE_HEADERS_TO_COPY = [
     "build/cpu1/inc/cfe_platform_cfg.h",
     "build/cpu1/inc/osconfig.h",
     "build/mission_inc/cfe_mission_cfg.h",
+    "cfe/fsw/cfe-core/src/inc/cfe_es.h",
+    "cfe/fsw/cfe-core/src/inc/cfe_es_perfids.h",
     "osal/src/os/inc/*",
     "psp/fsw/pc-composite/inc/*",
     "psp/fsw/inc/*"
 ]
 
 # Just some shell magic to load the environment variable exports needed to build cFE.
-cfe_env = sp.Popen(["bash", "-c", "trap 'env' exit; cd {} && source \"$1\" > /dev/null 2>&1".format(CFE_DIR),
-       "_", "setvars.sh"], shell=False, stdout=sp.PIPE).communicate()[0]
+cfe_env = sp.Popen(["bash", "-c",
+                    "trap 'env' exit; cd {} && source \"$1\" > /dev/null 2>&1".format(CFE_DIR), "_", "setvars.sh"], shell=False, stdout=sp.PIPE).communicate()[0]
 os.environ.update(dict([line.split('=', 1) for line in filter(None, cfe_env.split("\n"))]))
 
 print """
@@ -110,8 +111,6 @@ for header in CFE_HEADERS_TO_COPY:
     sp.check_call("cp " + CFE_DIR + header + " " + COMPOSITE_CFE_HEADER_DESTINATION, shell=True)
 
 if args.unit_tests:
-    import fnmatch
-
     print "=== Building unit tests ==="
     sp.call("make" + OUT, shell=True, cwd=OSAL_UT_DIR)
     print "Cleaning old test objects..."
@@ -120,7 +119,7 @@ if args.unit_tests:
     os.mkdir(COMPOSITE_CFE_UT_DESTINATION)
     print "Copying UT objects..."
     for obj in os.listdir(OSAL_UT_DIR):
-            if not obj in OSAL_UT_OBJECTS_TO_SKIP and os.path.isfile(OSAL_UT_DIR + obj):
+            if obj not in OSAL_UT_OBJECTS_TO_SKIP and os.path.isfile(OSAL_UT_DIR + obj):
                 shutil.copy(OSAL_UT_DIR + obj, COMPOSITE_CFE_UT_DESTINATION)
                 print "Copied {} to {}".format(obj, COMPOSITE_CFE_UT_DESTINATION)
     print "Copying UT headers..."
@@ -158,6 +157,6 @@ sp.check_call("mv cFEfs.tar ../../../../cFEfs.tar" + OUT, shell=True, cwd=CFE_OB
 sp.check_call("ld -r -b binary cFEfs.tar -o cFEfs.o" + OUT, shell=True, cwd=ROOT)
 sp.check_call("ld -r cFEfs.o composite/transfer/cFE_booter.o -o mergedbooter.o" + OUT, shell=True, cwd=ROOT)
 sp.check_call("cp mergedbooter.o composite/transfer/cFE_booter.o" + OUT, shell=True, cwd=ROOT)
-os.remove(ROOT+"cFEfs.o")
-os.remove(ROOT+"cFEfs.tar")
-os.remove(ROOT+"mergedbooter.o")
+os.remove(ROOT + "cFEfs.o")
+os.remove(ROOT + "cFEfs.tar")
+os.remove(ROOT + "mergedbooter.o")
