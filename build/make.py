@@ -152,7 +152,7 @@ else:
     sp.check_call("make" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 sp.check_call("make cp" + OUT, shell=True, cwd=COMPOSITE_MAKE_ROOT)
 
-sp.check_call("tar cf cFEfs.tar cf/" + OUT, shell=True, cwd=CFE_OBJECT_LOCATION)
+sp.check_call("tar cf cFEfs.tar --exclude=\"cf/apps/composite_cFE.o\" cf/" + OUT, shell=True, cwd=CFE_OBJECT_LOCATION)
 sp.check_call("mv cFEfs.tar ../../../../cFEfs.tar" + OUT, shell=True, cwd=CFE_OBJECT_LOCATION)
 sp.check_call("ld -r -b binary cFEfs.tar -o cFEfs.o" + OUT, shell=True, cwd=ROOT)
 sp.check_call("ld -r cFEfs.o composite/transfer/cFE_booter.o -o mergedbooter.o" + OUT, shell=True, cwd=ROOT)
