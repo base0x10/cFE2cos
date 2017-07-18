@@ -6,3 +6,4 @@
 *.bin
 
 .clang_complete
+tags
