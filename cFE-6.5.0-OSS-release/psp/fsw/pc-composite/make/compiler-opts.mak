@@ -1,4 +1,4 @@
-##############################################################################
+#############################################################################
 ## compiler-opts.mak - compiler definitions and options for building the cFE
 ##
 ## Target: x86 PC Linux
@@ -13,9 +13,15 @@
 WARNINGS=-Wall -Wstrict-prototypes
 
 ##
+## Path to targeted libc for cross compilation.
+##
+
+LIBC_PATH=/home/vagrant/cFE2cos/composite/src/components/lib/musl-1.1.11
+
+##
 ## Host OS Include Paths ( be sure to put the -I switch in front of each directory )
 ##
-SYSINCS=
+SYSINCS=-nostdinc -I$(LIBC_PATH)/include
 
 ##
 ## Target Defines for the OS, Hardware Arch, etc..
