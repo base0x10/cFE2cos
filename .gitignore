@@ -1,6 +1,9 @@
+**/.DS_Store
+**/.vagrant
+
 *.o
 *.so
 *.bin
 
-**/.DS_Store
-**/.vagrant
+.clang_complete
+tags
