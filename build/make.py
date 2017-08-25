@@ -27,7 +27,8 @@ print "ROOT: {}".format(ROOT)
 COMPOSITE_DIR = ROOT + "composite/"
 COMPOSITE_TRANSFER_DIR = COMPOSITE_DIR + "transfer/"
 COMPOSITE_MAKE_ROOT = COMPOSITE_DIR + "src/"
-COMPOSITE_CFE_COMPONENT_ROOT = COMPOSITE_DIR + "src/components/implementation/no_interface/cFE_booter/"
+COMPOSITE_IMPL_NO_INTERFACE_DIR = COMPOSITE_DIR + "src/components/implementation/no_interface/"
+COMPOSITE_CFE_COMPONENT_ROOT = COMPOSITE_IMPL_NO_INTERFACE_DIR + "cFE_booter/"
 COMPOSITE_CFE_HEADER_DESTINATION = COMPOSITE_CFE_COMPONENT_ROOT + "gen/"
 print "COMPOSITE_DIR: {}".format(COMPOSITE_DIR)
 print "COMPOSITE_TRANSFER_DIR: {}".format(COMPOSITE_TRANSFER_DIR)
@@ -73,10 +74,18 @@ CFE_HEADERS_TO_COPY = [
     "build/cpu1/inc/osconfig.h",
     "build/mission_inc/cfe_mission_cfg.h",
     "cfe/fsw/cfe-core/src/inc/cfe_es.h",
-    "cfe/fsw/cfe-core/src/inc/cfe_es_perfids.h",
+    "cfe/fsw/cfe-core/src/inc/cfe_evs.h",
     "osal/src/os/inc/*",
     "psp/fsw/pc-composite/inc/*",
     "psp/fsw/inc/*"
+]
+
+CFE_APPS = [
+    ("sch_lab", "sch_lab_app.o"),
+    ("ci_lab", "ci_lab_app.o"),
+    ("to_lab", "to_lab_app.o"),
+    ("sample_lib", "sample_lib.o"),
+    ("sample_app", "sample_app.o")
 ]
 
 # Just some shell magic to load the environment variable exports needed to build cFE.
@@ -140,6 +149,13 @@ if not os.path.exists(OBJECT_SOURCE):
     raise RuntimeError("Could not find cFE object to copy!")
 shutil.copy(OBJECT_SOURCE, OBJECT_DESTINATION)
 print "Copied {} to {}".format(OBJECT_SOURCE, OBJECT_DESTINATION)
+
+print "=== Copying apps ==="
+for (app, obj) in CFE_APPS:
+    src = CFE_MAKE_ROOT + app + "/" + obj
+    dest = COMPOSITE_IMPL_NO_INTERFACE_DIR + app + "/cFE_" + obj
+    print "Copying app '{}' to '{}'.".format(src, dest)
+    shutil.copy(src, dest)
 
 print "=== Building Composite ==="
 if args.first:
