@@ -82,8 +82,6 @@ CFE_HEADERS_TO_COPY = [
 
 CFE_APPS = [
     ("sch_lab", "sch_lab_app.o"),
-    ("ci_lab", "ci_lab_app.o"),
-    ("to_lab", "to_lab_app.o"),
     ("sample_lib", "sample_lib.o"),
     ("sample_app", "sample_app.o")
 ]
