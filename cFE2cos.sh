@@ -21,10 +21,10 @@ test support.\
 
     case "$1" in
         init)
-            cd ~/cFE2cos/cFE-6.5.0-OSS-release
+            cd ~/cFE2cos/cFE
             source ./setvars.sh
 
-            cd ~/cFE2cos/cFE-6.5.0-OSS-release/build/cpu1
+            cd ~/cFE2cos/cFE/build/cpu1
             make config
             if [ $? -ne 0 ]; then
                 errcho 'cFE2cos: Could not "make config" the cFE!\n'
@@ -45,7 +45,7 @@ test support.\
             ;;
 
         build)
-            cd ~/cFE2cos/cFE-6.5.0-OSS-release
+            cd ~/cFE2cos/cFE
             source ./setvars.sh
 
             cd ~/cFE2cos/build
